@@ -60,7 +60,7 @@ func doors (from: Term, to: Term) -> Goal {
 }
 
 func entrance (location: Term) -> Goal {
-    return (location === room(1,4) || (location === room(4,4))
+    return (location === room(1,4)) || (location === room(4,4))
 }
 
 func exit (location: Term) -> Goal {
@@ -72,13 +72,26 @@ func minotaur (location: Term) -> Goal {
 }
 
 func path (from: Term, to: Term, through: Term) -> Goal {
-    // TODO
-}
+    // basic case two connected doors so through is empty
+    //then we recursively build a path until we arrive at the basic case
+    //verifying the path
+    return (through === List.empty &&  doors(from: from, to: to)) ||
+          delayed ( fresh {x in fresh {
+                      y in ((through === List.cons(x, y)) && doors(from: from, to: x) &&
+                      path(from: x, to: to, through: y))
+                  }})
+  }
 
 func battery (through: Term, level: Term) -> Goal {
     // TODO
+    return (through === List.empty)
 }
 
 func winning (through: Term, level: Term) -> Goal {
-    // TODO
+
+    // to win first we need to have enough battery we need the minotaur  to be
+    //part of the path and that there the through or the path exists
+return //battery(through: through, level: level) &&
+  delayed(fresh { x in fresh { y in path(from: x,to : y, through: through) &&
+  entrance(location: x) && exit(location: y) }})
 }
