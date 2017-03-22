@@ -58,18 +58,17 @@ func doors (from: Term, to: Term) -> Goal {
   || (from === room(3,4) && to === room(3,3))
   || (from === room(4,4) && to === room(3,4))
 }
-}
 
 func entrance (location: Term) -> Goal {
-    // TODO
+    return (location === room(1,4) || (location === room(4,4))
 }
 
 func exit (location: Term) -> Goal {
-    // TODO
+    return (location === room(1,1)) || (location === room(4,3))
 }
 
 func minotaur (location: Term) -> Goal {
-    // TODO
+    return (location === room(3,2))
 }
 
 func path (from: Term, to: Term, through: Term) -> Goal {
