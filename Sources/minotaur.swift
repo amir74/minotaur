@@ -38,7 +38,26 @@ func room (_ x: Int, _ y: Int) -> Term {
 }
 
 func doors (from: Term, to: Term) -> Goal {
-    // TODO
+  return
+     (from === room(2,1) && to === room(1,1))
+  || (from === room(3,1) && to === room(2,1))
+  || (from === room(4,1) && to === room(3,1))
+  || (from === room(1,2) && to === room(1,1))
+  || (from === room(1,2) && to === room(2,2))
+  || (from === room(2,2) && to === room(3,2))
+  || (from === room(3,2) && to === room(4,2))
+  || (from === room(3,2) && to === room(3,3))
+  || (from === room(4,2) && to === room(4,3))
+  || (from === room(4,2) && to === room(4,1))
+  || (from === room(1,3) && to === room(1,2))
+  || (from === room(2,3) && to === room(1,3))
+  || (from === room(2,3) && to === room(2,2))
+  || (from === room(1,4) && to === room(1,3))
+  || (from === room(2,4) && to === room(2,3))
+  || (from === room(3,4) && to === room(2,4))
+  || (from === room(3,4) && to === room(3,3))
+  || (from === room(4,4) && to === room(3,4))
+}
 }
 
 func entrance (location: Term) -> Goal {
