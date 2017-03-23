@@ -82,16 +82,36 @@ func path (from: Term, to: Term, through: Term) -> Goal {
                   }})
   }
 
+func battery_check(through: Term, level: Term) -> Goal{
+  return delayed (fresh {x in fresh {y in fresh { z in fresh { t in
+    //we iterate until we still have levels and we still have rooms
+    // z === succ(t) verifies that we still have power in the battery
+    (through === List.cons(x,y)) && (level ≡ succ(z)) && (z === succ(t)) &&
+    (battery_check(through: y,level : z))
+  }}}})
+}
+
 func battery (through: Term, level: Term) -> Goal {
-    // TODO
-    return (through === List.empty)
+    // we ietrate and see if we have enough battery per room we traverse
+    return delayed (fresh {x in
+      (level === succ(x)) && battery_check(through: through,level: x)
+    })
+}
+
+func Meetminotaur(through: Term) -> Goal{
+  //one of the winning conditions is if we meet the minotaur in the chosehn path at all
+  return (delayed (fresh {
+    x in fresh {y in (
+      minotaur(location: through) || through === List.cons(x,y) && (minotaur(location: x) || Meetminotaur(through: y))
+    )}
+  }))
 }
 
 func winning (through: Term, level: Term) -> Goal {
 
     // to win first we need to have enough battery we need the minotaur  to be
     //part of the path and that there the through or the path exists
-return //battery(through: through, level: level) &&
+return battery(through: through, level: level) && Meetminotaur(through: through) &&
   delayed(fresh { x in fresh { y in path(from: x,to : y, through: through) &&
   entrance(location: x) && exit(location: y) }})
 }
