@@ -83,18 +83,19 @@ func path (from: Term, to: Term, through: Term) -> Goal {
   }
 
 func battery_check(through: Term, level: Term) -> Goal{
-  return delayed (fresh {x in fresh {y in fresh { z in fresh { t in
+  return (through === List.empty && delayed(fresh {x in level === succ(x)})) //the basic case no path and more than one level
+   || 
+  delayed (fresh {x in fresh {y in fresh { z in
     //we iterate until we still have levels and we still have rooms
     // z === succ(t) verifies that we still have power in the battery
-    (through === List.cons(x,y)) && (level ≡ succ(z)) && (z === succ(t)) &&
-    (battery_check(through: y,level : z))
-  }}}})
+    through === List.cons(x,y) && level === succ(z) && battery_check(through: y,level : z)
+  }}})
 }
 
 func battery (through: Term, level: Term) -> Goal {
     // we ietrate and see if we have enough battery per room we traverse
     return delayed (fresh {x in
-      (level === succ(x)) && battery_check(through: through,level: x)
+      ((level === succ(x)) && battery_check(through: through,level: x))
     })
 }
 
